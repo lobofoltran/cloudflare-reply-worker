@@ -1,6 +1,7 @@
 import { EmailMessage } from "cloudflare:email";
 
 const SUPPORT_EMAIL = "support@lobofoltran.dev";
+const FORWARD_TO = "gustavoqe.75@gmail.com";
 
 function escapeHtml(value: string): string {
   return value
@@ -79,6 +80,9 @@ export default {
       to: message.to,
       subject: message.headers.get("Subject") || "",
     });
+
+    await message.forward(FORWARD_TO);
+    console.log("Forward executed", { to: FORWARD_TO, originalFrom: message.from });
 
     if (message.headers.has("Auto-Submitted")) {
       return;
